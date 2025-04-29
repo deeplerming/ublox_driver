@@ -30,6 +30,7 @@
 */
 
 #include "ublox_message_processor.hpp"
+#include "thread"
 
 constexpr double UbloxMessageProcessor::lam_carr[];
 constexpr unsigned int UbloxMessageProcessor::tbl_CRC24Q[];
@@ -128,8 +129,10 @@ void UbloxMessageProcessor::process_data(const uint8_t *data, size_t len)
         lla_msg.status.status = static_cast<int8_t>(pvt_soln->fix_type);
         lla_msg.status.service = static_cast<uint16_t>(pvt_soln->carr_soln);
         pub_lla_.publish(lla_msg);
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
         return;
     }
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
     // unsupported message reach here
     return;
 }
