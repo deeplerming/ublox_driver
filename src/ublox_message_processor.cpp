@@ -61,6 +61,7 @@ void UbloxMessageProcessor::process_data(const uint8_t *data, size_t len)
         if (meas.empty())   return;
         GnssMeasMsg meas_msg = meas2msg(meas);
         pub_range_meas_.publish(meas_msg);
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
         return;
     }
     else if (msg_type == UBX_RXMSFRBX_ID)
@@ -89,6 +90,7 @@ void UbloxMessageProcessor::process_data(const uint8_t *data, size_t len)
             std::copy(iono_params.begin(), iono_params.end(), std::back_inserter(iono_msg.data));
             pub_iono_.publish(iono_msg);
         }
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
         return;
     }
     else if (msg_type == UBX_TIM_TP_ID)
@@ -99,6 +101,7 @@ void UbloxMessageProcessor::process_data(const uint8_t *data, size_t len)
             GnssTimePulseInfoMsg tp_info_msg = tp_info2msg(tp_info);
             pub_tp_info_.publish(tp_info_msg);
         }
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
         return;
     }
     else if (msg_type == UBX_NAVPOS_ID)
